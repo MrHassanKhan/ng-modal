@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgModalService } from '../ng-modal.service';
 
 @Component({
@@ -22,19 +22,20 @@ export class NgModalComponent implements OnInit {
   // Properties
 
   modalList:ModalDto[] = [];
+  autoIncrement = 1;
 
   // Constructor
 
   constructor( private ngModalService: NgModalService) { }
 
   ngOnInit(): void {
-    // this.ngModalService.onHideModal$.subscribe(() => {
-    //   this.close();
-    // });
+    this.ngModalService.onHideModal$.subscribe((modal) => {
+      this.modalList.splice(this.modalList.findIndex(m => m.id==modal.id), 1);
+    });
 
     this.ngModalService.onShowModal$.subscribe(({ ...rest }) => {
       // this.open();
-      this.modalList.push(rest);
+      this.modalList.push({...rest, id: this.autoIncrement++});
       // if(this.container) {
       //   this.container.clear();
       //   const factory = this.componentFactoryResolver.resolveComponentFactory(component);
@@ -44,12 +45,11 @@ export class NgModalComponent implements OnInit {
     });
   }
 
-  ngOnChanges(changesObj: SimpleChanges) {
-    
-  }
- 
+  identify(index:any,item:any){
+    //do what ever logic you need to come up with the unique identifier of your item in loop, I will just return the object id.
+    return item.id 
+   }
 
-  
 
 }
 

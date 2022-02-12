@@ -48,8 +48,6 @@ import { NgModalService } from "../ng-modal.service";
     @ViewChild('sqModalWindow') private sqModalWindow: ElementRef | undefined;
     @ViewChild('container', { read: ViewContainerRef, static: true }) private container: ViewContainerRef | undefined;
 
-
-    listenForOutsideClick: boolean = false;
     height: string = '100%';
     width: string = '100%';
     constructor(private ngModalService: NgModalService, private renderer: Renderer2, private componentFactoryResolver: ComponentFactoryResolver) { 
@@ -88,9 +86,12 @@ import { NgModalService } from "../ng-modal.service";
           setTimeout(() => {
             this.renderer.addClass(this.sqModal?.nativeElement, 'display-none');
             this.renderer.removeClass(this.sqModalWindow?.nativeElement, exitAnimationClass);
-            this.listenForOutsideClick = false;
+            
+            this.ngModalService.hideModal(this.modal);
           }, animationDuration);
         }
+
+        
       }
 
       open() {
@@ -102,7 +103,6 @@ import { NgModalService } from "../ng-modal.service";
     
           setTimeout(() => {
             this.renderer.removeClass(this.sqModalWindow?.nativeElement, entranceAnimationClass);
-            this.listenForOutsideClick = true;
           }, animationDuration);
         }
       }

@@ -17,7 +17,7 @@ export class NgModalService {
     this.onShowModal$.next({ title, component, height, width });
   }
 
-  hideModal() {
-    this.onHideModal$.next(true);
+  hideModal(modal:any) {
+    this.onHideModal$.next(modal);
   }
 }

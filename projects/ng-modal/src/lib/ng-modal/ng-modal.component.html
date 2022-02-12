@@ -27,6 +27,6 @@
   </div> -->
 
 
-<ng-container *ngFor="let modal of modalList">
+<ng-container *ngFor="let modal of modalList; trackBy:identify">
   <ng-mymodal-content [modal]="modal"></ng-mymodal-content>
 </ng-container>
