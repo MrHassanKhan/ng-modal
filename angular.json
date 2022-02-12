@@ -3,5 +3,166 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "ng-modal": {
+      "projectType": "library",
+      "root": "projects/ng-modal",
+      "sourceRoot": "projects/ng-modal/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ng-modal/tsconfig.lib.json",
+            "project": "projects/ng-modal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-modal/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-modal/src/test.ts",
+            "tsConfig": "projects/ng-modal/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-modal/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-modal/tsconfig.lib.json",
+              "projects/ng-modal/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "front-end": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/front-end",
+      "sourceRoot": "projects/front-end/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/front-end",
+            "index": "projects/front-end/src/index.html",
+            "main": "projects/front-end/src/main.ts",
+            "polyfills": "projects/front-end/src/polyfills.ts",
+            "tsConfig": "projects/front-end/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/front-end/src/favicon.ico",
+              "projects/front-end/src/assets"
+            ],
+            "styles": [
+              "projects/front-end/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/front-end/src/environments/environment.ts",
+                  "with": "projects/front-end/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "front-end:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "front-end:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "front-end:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/front-end/src/test.ts",
+            "polyfills": "projects/front-end/src/polyfills.ts",
+            "tsConfig": "projects/front-end/tsconfig.spec.json",
+            "karmaConfig": "projects/front-end/karma.conf.js",
+            "assets": [
+              "projects/front-end/src/favicon.ico",
+              "projects/front-end/src/assets"
+            ],
+            "styles": [
+              "projects/front-end/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/front-end/tsconfig.app.json",
+              "projects/front-end/tsconfig.spec.json",
+              "projects/front-end/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/front-end/e2e/protractor.conf.js",
+            "devServerTarget": "front-end:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "front-end:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ng-modal"
 }
